@@ -14,7 +14,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@theatersoft/bus": "^1.0.0",
-    "dbus": "^0.2.19"
+    "dbus": "github:rhuehn/node-dbus"
   },
   "devDependencies": {
     "babel-preset-babili": "0.0.3",
