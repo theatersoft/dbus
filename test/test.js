@@ -6,7 +6,7 @@ const
     networkManager = {
         service: 'org.freedesktop.NetworkManager',
         path: '/org/freedesktop/NetworkManager',
-        name: '/org/freedesktop/NetworkManager'
+        name: 'org.freedesktop.NetworkManager'
     }
 
 Bus.start().then(_ => {

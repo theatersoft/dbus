@@ -4,6 +4,6 @@
   "author": "Rob Huehn <rob@theatersoft.com>",
   "scripts": {
     "test": "node test.js",
-    "debug-test": "node --inspect --debug-brk test.js"
+    "debug-test": "node --inspect=9241 --debug-brk test.js"
   }
 }
