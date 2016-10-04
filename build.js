@@ -6,27 +6,9 @@ const
     fs = require('fs'),
     rollup = require('rollup'),
     babel = require('rollup-plugin-babel'),
-//babili = require('babel-preset-babili'),
-    copyright = `/*
- Copyright (C) 2016 Theatersoft
-
- This program is free software: you can redistribute it and/or modify it under
- the terms of the GNU Affero General Public License as published by the Free
- Software Foundation, version 3.
-
- This program is distributed in the hope that it will be useful, but WITHOUT
- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- details.
-
- You should have received a copy of the GNU Affero General Public License along
- with this program. If not, see <http://www.gnu.org/licenses/>
-  */`,
+    copyright = `/*\n${fs.readFileSync('COPYRIGHT', 'utf8')}\n */`,
     pkg = require('./package.json'),
-    execo = c => exec(c, {silent: true}).trim(),
-    liftUndefined = x => x === 'undefined' ? undefined : x,
-    getVar = n => liftUndefined(execo('npm config get dbus:' + n)),
-    DIST = getVar('dist') === 'true',
+    DIST = process.env.DIST === 'true',
     plugins = DIST && [
             babel({
                 babelrc: false,
@@ -72,21 +54,6 @@ target.node = function () {
                 })
                 .then(() => console.log('wrote dist/dbus.js'))
         })
-    rollup.rollup({
-            entry: 'src/start.js',
-            external: Object.keys(pkg.dependencies),
-            plugins
-        })
-        .then(bundle => {
-            bundle.write({
-                    dest: 'dist/start.js',
-                    format: 'cjs',
-                    moduleName: 'dbus',
-                    banner: copyright,
-                    sourceMap: DIST ? false : 'inline'
-                })
-                .then(() => console.log('wrote dist/start.js'))
-        })
 }
 
 target.watch = function () {
@@ -113,7 +80,7 @@ target.package = function () {
     }, {})
     fs.writeFileSync('dist/package.json', JSON.stringify(p, null, '  '), 'utf-8')
     exec('sed -i "s|dist/||g" dist/package.json ')
-    exec('cp LICENSE dist')
+    exec('cp LICENSE start.js dist')
 }
 
 target.client = function () {
@@ -128,6 +95,5 @@ target.publish = function () {
 
 target.all = function () {
     target.node()
-    //target['node-es']()
     target.package()
 }
