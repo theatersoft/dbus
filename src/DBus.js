@@ -25,7 +25,7 @@ const
         return new Promise((r, j) => {
             method.finish = ret => r(ret)
             method.error = err => j(err)
-            method.apply(intf, args)
+            method.apply(_intf, args)
         })
     }
 
