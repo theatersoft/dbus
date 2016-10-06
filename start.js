@@ -1,7 +1,7 @@
 'use strict'
 
 const
-    Bus = require('@theatersoft/bus').default,
+    bus = require('@theatersoft/bus').default,
     DBus = require('@theatersoft/dbus')
 
-Bus.start().then(bus => new DBus(bus)._register())
+bus.start().then(() => new DBus()._register())

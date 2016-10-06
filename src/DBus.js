@@ -1,3 +1,4 @@
+import bus from '@theatersoft/bus'
 import __dbus from 'dbus'
 
 const
@@ -30,12 +31,11 @@ const
     }
 
 export default class DBus {
-    constructor (bus) {
-        this.bus = bus
+    constructor () {
     }
 
     _register () {
-        return this.bus.registerObject('DBus', this)
+        return bus.registerObject('DBus', this)
     }
 
     getInterface (service, path, name) {
