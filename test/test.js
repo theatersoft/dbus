@@ -1,8 +1,8 @@
 'use strict'
 
 const
-    {Bus} = require('@theatersoft/bus'),
-    DBus = Bus.proxy('DBus'),
+    {default: Bus, proxy} = require('@theatersoft/bus'),
+    dbus = proxy('DBus'),
     networkManager = {
         service: 'org.freedesktop.NetworkManager',
         path: '/org/freedesktop/NetworkManager',
@@ -10,7 +10,7 @@ const
     }
 
 Bus.start().then(_ => {
-    DBus.getProperty(networkManager, 'NetworkingEnabled')
+    dbus.getProperty(networkManager, 'NetworkingEnabled')
         .then(res =>
             console.log('1. getProperty NetworkingEnabled returned', res))
         .catch(err =>
