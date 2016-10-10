@@ -1,13 +1,13 @@
-import bus from '@theatersoft/bus'
+import bus, {proxy} from '@theatersoft/bus'
 import __dbus from 'dbus'
 
 const
     _dbus = new __dbus(),
-    _bus = _dbus.getBus('system')
+    _system = _dbus.getBus('system')
 
 const
     getInterface = ({service, path, name}) => new Promise((r, j) =>
-        _bus.getInterface(service, path, name, (err, intf) => {
+        _system.getInterface(service, path, name, (err, intf) => {
             if (err) j(err)
             else r(intf)
         })),
@@ -54,5 +54,34 @@ export default class DBus {
 
     callMethod (intf, method, args) {
         return getInterface(intf).then(_intf => callMethod(_intf, method, args))
+    }
+
+    registerService (service, bus = 'system') {
+        const
+            _service = dbus.registerService(bus, service) // TODO
+    }
+
+    // e.g. {service: 'org.example', path: '/org/example/Agent, name: 'org.bluez.Agent1'}
+    registerObject ({service, path, name}, busName, busIntf) {
+        const
+            _service = _dbus.registerService('system', service), // TODO
+            _obj = _service.createObject(path),
+            _intf = _obj.createInterface(name)
+        obj = proxy(busName)
+        Object.keys(busIntf).forEach(method => {
+            const
+                opts = busIntf[method],
+                argc = opts['in'] ? opts['in'].length : 0
+            _intf.addMethod(method, opts, (...args) => {
+                obj[method](...(args.slice(0, argc)))
+                    .then(res =>
+                        args[argc](res))
+                    .catch(err => {
+                        console.error('dbus proxy method rejected', err)
+                        throw err
+                    })
+            })
+        })
+        _intf.update()
     }
 }
