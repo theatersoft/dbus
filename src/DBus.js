@@ -56,18 +56,15 @@ export default class DBus {
         return getInterface(intf).then(_intf => callMethod(_intf, method, args))
     }
 
-    registerService (service, bus = 'system') {
-        const
-            _service = dbus.registerService(bus, service) // TODO
+    registerService (service) {
+        _dbus.registerService('system', service)
     }
 
-    // e.g. {service: 'org.example', path: '/org/example/Agent, name: 'org.bluez.Agent1'}
     registerObject ({service, path, name}, busName, busIntf) {
-        const
-            _service = _dbus.registerService('system', service), // TODO
-            _obj = _service.createObject(path),
-            _intf = _obj.createInterface(name)
-        obj = proxy(busName)
+        const _service = _dbus.registerService('system', service)
+        const _obj = _service.createObject(path)
+        const _intf = _obj.createInterface(name)
+        const obj = proxy(busName)
         Object.keys(busIntf).forEach(method => {
             const
                 opts = busIntf[method],
