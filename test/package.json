@@ -3,11 +3,10 @@
   "version": "0.2.0",
   "author": "Rob Huehn <rob@theatersoft.com>",
   "scripts": {
-    "getProperty": "node getProperty.js",
     "debug-getProperty": "node --inspect=9241 --debug-brk getProperty.js",
-    "registerService": "node registerService.js",
-    "debug-registerService": "node --inspect=9241 --debug-brk registerService.js",
-    "registerObject": "node registerObject.js",
-    "debug-registerObject": "node --inspect=9241 --debug-brk registerObject.js"
+    "debug-registerObject": "node --inspect=9241 --debug-brk registerObject.js",
+    "callMethod": "node callMethod.js",
+    "getProperty": "node getProperty.js",
+    "registerObject": "node registerObject.js"
   }
 }
