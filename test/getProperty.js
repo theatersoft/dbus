@@ -1,7 +1,7 @@
 'use strict'
 
 const
-    {default: bus, proxy} = require('@theatersoft/bus'),
+    {bus, proxy} = require('@theatersoft/bus'),
     dbus = proxy('DBus'),
     networkManager = {
         service: 'org.freedesktop.NetworkManager',
